@@ -12,5 +12,16 @@ def before_all(context):
     context.vars = {}
 
 
-def after_feature(context, feature):
+def before_scenario(context, scenario):
+    for tag in scenario.tags:
+        if 'create_instance_' in str(tag):
+            endpoint = str(tag).replace('create_instance_', '')
+            context.execute_steps(f'''
+                Given I create a record for "{endpoint}" from template
+            ''')
+
+
+def after_scenario(context, scenario):
     context.request.reset_credentials()
+
+

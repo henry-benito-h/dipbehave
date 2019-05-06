@@ -7,14 +7,14 @@ from utils.param_transformation import replace_parameters
 use_step_matcher("re")
 
 
-@given(u'I have the next endpoint "(?P<endpoint>.*)"')
+@step(u'I have the next endpoint "(?P<endpoint>.*)"')
 def step_impl(context, endpoint):
     if '<id>' in endpoint and hasattr(context, 'id'):
         endpoint = endpoint.replace('<id>', str(context.id))
     context.endpoint = endpoint
 
 
-@given(u'I have the body payload below')
+@step(u'I have the body payload below')
 def step_impl(context):
     try:
         new_context_text = replace_parameters(context, context.text)
@@ -26,19 +26,19 @@ def step_impl(context):
     # context.vars.update({f"{context.endpoint}.{context.req_body.get('name')}" : context.req_body})
 
 
-@when(u'I do an api (?P<method>GET|POST|PUT|DELETE) request')
+@step(u'I do an api (?P<method>GET|POST|PUT|DELETE) request')
 def step_impl(context, method):
     data = context.req_body if hasattr(context, 'req_body') else None
     params = context.req_params if hasattr(context, 'req_params') else None
     context.response = context.request.call(method, context.endpoint, data=data, params=params)
 
 
-@then(u'I should have (?P<status_code>.*) as status code')
+@step(u'I should have (?P<status_code>.*) as status code')
 def step_impl(context, status_code):
     expect(int(status_code)).to_equal(context.response.status_code)
 
 
-@then("response body should match with (?P<content>.*)?content")
+@step("response body should match with (?P<content>.*)?content")
 def step_impl(context, content):
     content = content.rstrip()
     if content == "empty" and context.text:
@@ -116,3 +116,14 @@ def step_impl(context):
         get_response = context.request.call('GET', f"{context.endpoint}/{current_response['id']}").json()
 
     expect(current_response).to_equal(get_response)
+
+
+@step('I create a record for "(?P<endpoint_name>.*)" from template')
+def step_impl(context, endpoint_name):
+    template = open(f"resources/templates/{endpoint_name}.json")
+    new_context_text = replace_parameters(context, template.read())
+    new_context_text = json.dumps(json.loads(new_context_text))
+    params = context.req_params if hasattr(context, 'req_params') else None
+    request_response = context.request.call('POST', endpoint_name, data=new_context_text, params=params)
+    context.id = request_response.json()["id"]
+    pass

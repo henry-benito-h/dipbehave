@@ -5,13 +5,15 @@ Feature: Projects
   I want to do the main CRUD operations with projects resources
   So non 4XX code should be displayed
 
-  Background:
+#  Background:
 #    Given I am authenticated as "admin"
-    Given I have the next endpoint "projects"
+#    Given I create a record for "projects" from template
+#    Given I have the next endpoint "projects"
 
+  @create_instance_projects
   Scenario: Create a new project
     Given I remove all projects from dashboard
-    Given I have the next endpoint "projects"
+    And I have the next endpoint "projects"
     And I have the body payload below
     """
     {

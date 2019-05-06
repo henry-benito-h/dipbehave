@@ -21,7 +21,8 @@ def replace_parameters(context, text):
         fn = get_function_name(param)
         param_value = get_parameter_value(param)
         new_value = getattr(utils.random_resources, fn)(param_value) if param_value else getattr(utils.random_resources, fn)()
-        text = text.replace(param, new_value)
+        text = text.replace(param, str(new_value))
+
     return text
 
 

@@ -1,4 +1,3 @@
-# Created by Jafeth GArcia and Henry Benito at 2/20/2019
 Feature: Generic steps on a basic scenario
   # Enter feature description here
 
