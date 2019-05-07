@@ -10,4 +10,4 @@ root:
       username: admin
       password: admin
       token_header: X-TrackerToken
-      token: cffede56087bb0774ab5bea0019b5753
+      token: e0b6db9c0cc59332f65349b85a6a3b26

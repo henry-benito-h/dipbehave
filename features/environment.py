@@ -21,7 +21,9 @@ def before_scenario(context, scenario):
             ''')
 
 
-def after_scenario(context, scenario):
-    context.request.reset_credentials()
+# def after_scenario(context, scenario):
+#     context.request.reset_credentials()
 
+def get_context(context):
+    return context
 
