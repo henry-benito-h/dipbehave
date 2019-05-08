@@ -1,4 +1,4 @@
-from utils.random_resources import *
+from transformation.random_resources import *
 
 
 def test_random_string_default_value():
@@ -14,18 +14,16 @@ def test_random_string_with_size_10():
 def test_random_boolean():
     values = ['true', 'false']
     new_bool = random_boolean()
-    if new_bool in values:
-        result = True
-    else:
-        result = False
-    assert result
+    assert new_bool in values
 
 
 def test_random_week_day():
     values = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     weekday = random_week_day()
-    if weekday in values:
-        result = True
-    else:
-        result = False
-    assert result
+    assert weekday in values
+
+
+def test_random_privacy():
+    values = ['public', 'private']
+    weekday = random_privacy()
+    assert weekday in values
