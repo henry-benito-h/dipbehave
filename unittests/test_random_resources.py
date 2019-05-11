@@ -7,8 +7,13 @@ def test_random_string_default_value():
 
 
 def test_random_string_with_size_10():
-    new_string = random_string(10)
+    new_string = random_string(['10'])
     assert len(new_string) == 10
+
+
+def test_random_integer_with_default_values():
+    new_integer = random_integer(['0', '10'])
+    assert 0 <= new_integer < 10
 
 
 def test_random_boolean():
@@ -18,7 +23,7 @@ def test_random_boolean():
 
 
 def test_random_week_day():
-    values = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    values = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     weekday = random_week_day()
     assert weekday in values
 
