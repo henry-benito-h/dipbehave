@@ -2,12 +2,12 @@ import random
 import string
 
 
-def random_string(size='20'):
-    return "".join([random.choice(string.ascii_letters) for i in range(int(size))])
+def random_string(args=['20']):
+    return "".join([random.choice(string.ascii_letters) for i in range(int(args[0]))])
 
 
-def random_integer(max_value='5'):
-    return random.randint(1, int(max_value))
+def random_integer(args=[0, 10]):
+    return random.randint(int(args[0]), int(args[1]))
 
 
 def random_week_day():

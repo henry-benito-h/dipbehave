@@ -1,7 +1,7 @@
 import re
 
 # from utils.random_resources import *
-import utils.random_resources
+import transformation.random_resources
 start_char = "*"
 end_char = "*"
 
@@ -15,12 +15,15 @@ end_char = "*"
 #     return text
 
 
-def replace_parameters(context, text):
+def replace_parameters(text):
     parameters_on_text = re.findall(f"{replace_special_char(start_char)}.*?{replace_special_char(end_char)}", text)
     for param in parameters_on_text:
-        fn = get_function_name(param)
+        function_name = get_function_name(param)
+        if not hasattr(transformation.random_resources, function_name):
+            return None
         param_value = get_parameter_value(param)
-        new_value = getattr(utils.random_resources, fn)(param_value) if param_value else getattr(utils.random_resources, fn)()
+        new_value = getattr(transformation.random_resources, function_name)(param_value) if param_value else getattr(
+            transformation.random_resources, function_name)()
         text = text.replace(param, str(new_value))
 
     return text
@@ -44,7 +47,7 @@ def get_parameter_value(input_parameter):
     if "(" and ")" in input_parameter:
         start = input_parameter.index("(") + 1
         end = input_parameter.index(")")
-        return input_parameter[start: end]
+        return input_parameter[start: end].split(',')
     return None
 
 

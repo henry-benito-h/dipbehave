@@ -2,7 +2,7 @@ import json
 from compare import expect, ensure
 from behave import *
 
-from utils.param_transformation import replace_parameters
+from transformation.param_transformation import replace_parameters
 
 use_step_matcher("re")
 
@@ -17,7 +17,7 @@ def step_impl(context, endpoint):
 @step(u'I have the body payload below')
 def step_impl(context):
     try:
-        new_context_text = replace_parameters(context, context.text)
+        new_context_text = replace_parameters(context.text)
     except AttributeError:
         ensure(False, True, "There was an error on parameters values, please review custom method names")
     context.req_body_dict = json.loads(new_context_text)
@@ -48,7 +48,7 @@ def step_impl(context, content):
         expect("").to_equal(context.response.text)
 
     if context.text:
-        new_context_text = replace_parameters(context, context.text)
+        new_context_text = replace_parameters(context.text)
         try:
             current = context.response.json()
             if content:
@@ -62,7 +62,7 @@ def step_impl(context, content):
 
 @step("I have a record already created with this content")
 def step_impl(context):
-    new_context_text = replace_parameters(context, context.text)
+    new_context_text = replace_parameters(context.text)
     params = context.req_params if hasattr(context, 'req_params') else None
     request_response = context.request.call('POST', context.endpoint, data=new_context_text, params=params)
     context.id = request_response.json()["id"]
@@ -97,7 +97,7 @@ def step_impl(context):
 @step("the response body should contain previous content(?: and)?")
 def step_impl(context):
     if context.text:
-        text_replaced = replace_parameters(context, context.text)
+        text_replaced = replace_parameters(context.text)
         expected = json.loads(text_replaced)
         new_expected = {**context.vars.get(context.endpoint), **expected}
     else:
@@ -121,7 +121,7 @@ def step_impl(context):
 @step('I create a record for "(?P<endpoint_name>.*)" from template')
 def step_impl(context, endpoint_name):
     template = open(f"resources/templates/{endpoint_name}.json")
-    new_context_text = replace_parameters(context, template.read())
+    new_context_text = replace_parameters(template.read())
     new_context_text = json.dumps(json.loads(new_context_text))
     params = context.req_params if hasattr(context, 'req_params') else None
     request_response = context.request.call('POST', endpoint_name, data=new_context_text, params=params)

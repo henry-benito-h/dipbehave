@@ -1,6 +1,6 @@
 {
   "name": "*random string(10)*",
-  "iteration_length": *random integer(4)*,
+  "iteration_length": *random integer(1,4)*,
   "project_type": "*random privacy*",
   "public": *random boolean*,
   "week_start_day": "*random_week_day*",
