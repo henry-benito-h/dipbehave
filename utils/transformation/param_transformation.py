@@ -1,29 +1,21 @@
 import re
 
 # from utils.random_resources import *
-import transformation.random_resources
+from transformation.custom_random_resources import CustomRandomResources
 start_char = "*"
 end_char = "*"
-
-# def replace_parameters(context, text):
-#     parameters = {
-#         ":my_account_id": "100",
-#         ":randomName": random_string(20)
-#     }
-#     for key in parameters.keys():
-#         text = text.replace(key, str(parameters[key]))
-#     return text
 
 
 def replace_parameters(text):
     parameters_on_text = re.findall(f"{replace_special_char(start_char)}.*?{replace_special_char(end_char)}", text)
     for param in parameters_on_text:
         function_name = get_function_name(param)
-        if not hasattr(transformation.random_resources, function_name):
+        custom_random = CustomRandomResources()
+        if not hasattr(custom_random, function_name):
             return None
         param_value = get_parameter_value(param)
-        new_value = getattr(transformation.random_resources, function_name)(param_value) if param_value else getattr(
-            transformation.random_resources, function_name)()
+        new_value = getattr(custom_random, function_name)(param_value) if param_value else getattr(
+            custom_random, function_name)()
         text = text.replace(param, str(new_value))
 
     return text
