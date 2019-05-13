@@ -1,6 +1,7 @@
 import json
 from compare import expect, ensure
 from behave import *
+from jsonschema import validate
 
 from transformation.param_transformation import replace_parameters
 
@@ -127,3 +128,10 @@ def step_impl(context, endpoint_name):
     request_response = context.request.call('POST', endpoint_name, data=new_context_text, params=params)
     context.id = request_response.json()["id"]
     pass
+
+
+@step("I verify response schema")
+def step_impl(context):
+    current_response = context.response.json()
+    expected_schema = json.loads(context.text)
+    validate(instance=current_response, schema=expected_schema)
