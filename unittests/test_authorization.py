@@ -7,31 +7,38 @@ from utils.request_manager import Request
 
 config = {
     'host': 'https://www.pivotaltracker.com',
-    'root_path': '/services/v5/', 'auth': 'bearer',
-    'headers': {'accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
+    'root_path': '/services/v5/',
+    'authorization_type': 'bearer',
+    'default_role': 'admin',
+    'headers': {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'},
     'roles': {
         'admin': {
             'username': 'admin',
             'password': 'admin',
-            'token_header': 'X-TrackerToken',
-            'token': 'e0b6db9c0cc59332f65349b85a6a3b26'
+            'headers': {
+                'X-TrackerToken': 'e0b6db9c0cc59332f65349b85a6a3b26'
+            }
         }
     }
 }
+
 wrong_config = {
     'host': 'https://www.pivotaltracker.com',
-    'root_path': '/services/v5/', 'auth': 'bearer',
-    'headers': {'accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
+    'root_path': '/services/v5/',
+    'authorization_type': 'bearer',
+    'default_role': 'admin',
+    'headers': {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'},
     'roles': {
         'admin': {
             'usrname': 'admin',
-            'pssword': 'admin',
-            'token_heade': 'X-TrackerToken',
-            'tokn': 'e0b6db9c0cc59332f65349b85a6a3b26'
+            'passd': 'admin',
+            'headers': {
+                'X-TracerToken': 'e0b6db9c0cc59332f65349b85a6a3b26'
+            }
         }
     }
 }
@@ -40,36 +47,34 @@ wrong_config = {
 def test_basic_authorization():
     auth_factory = AuthFactory()
     request = Request(config)
-    role = config["roles"]["admin"]
-    auth_type = auth_factory.get_auth("basic")(request, role)
-    auth_type.set_params()
+    auth_type = auth_factory.get_auth("basic")()
+    auth_type.load_config(request, request.role)
     assert str(type(request.auth)) == "<class 'requests.auth.HTTPBasicAuth'>"
-    assert request.auth.username == role["username"]
-    assert request.auth.password == role["password"]
-    assert role["token_header"] not in request.headers
+    assert request.auth.username == request.role["username"]
+    assert request.auth.password == request.role["password"]
+    assert "X-TrackerToken" not in list(request.headers.keys())
 
 
 def test_bearer_authorization():
     auth_factory = AuthFactory()
     request = Request(config)
-    role = config["roles"]["admin"]
-    auth_type = auth_factory.get_auth("bearer")(request, role)
-    auth_type.set_params()
+    auth_type = auth_factory.get_auth("bearer")()
+    auth_type.load_config(request, request.role)
     assert request.auth is None
-    assert request.headers[role["token_header"]] == role["token"]
+    for header in request.role["headers"]:
+        assert request.role["headers"][header] == request.headers[header]
 
 
 def test_wrong_config_basic_authorization():
     auth_factory = AuthFactory()
     request = Request(wrong_config)
-    role = wrong_config["roles"]["admin"]
-    auth_type = auth_factory.get_auth("basic")(request, role)
-    assert auth_type.set_params() is None
+    auth_type = auth_factory.get_auth("basic")()
+    assert auth_type.load_config(request, request.role) is None
 
 
 def test_wrong_config_bearer_authorization():
     auth_factory = AuthFactory()
     request = Request(wrong_config)
-    role = wrong_config["roles"]["admin"]
-    auth_type = auth_factory.get_auth("bearer")(request, role)
-    assert auth_type.set_params() is None
+    auth_type = auth_factory.get_auth("bearer")()
+    assert auth_type.load_config(request, request.role) is None
+    pass
