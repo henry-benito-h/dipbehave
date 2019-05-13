@@ -1,7 +1,8 @@
 root:
   host: https://www.pivotaltracker.com
   root_path: /services/v5/
-  auth: bearer
+  authorization_type: bearer
+  default_role: admin
   headers:
     accept: application/json
     Content-Type: application/json
@@ -9,5 +10,5 @@ root:
     admin:
       username: admin
       password: admin
-      token_header: X-TrackerToken
-      token: e0b6db9c0cc59332f65349b85a6a3b26
+      headers:
+        X-TrackerToken: e0b6db9c0cc59332f65349b85a6a3b26

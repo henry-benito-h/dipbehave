@@ -8,17 +8,16 @@ from authorization.authorization_factory import AuthFactory
 
 
 class Request:
-    """Class client for api service"""
     def __init__(self, config):
         self.config = config
-        self.config_headers = config["headers"]
-        self.base_url = f'{config["host"]}{config["root_path"]}'
-        self.headers = {
-            'Content-Type': f'{self.config_headers["Content-Type"]}'
-        }
         self.auth_factory = AuthFactory()
-        self.auth_type = self.auth_factory.get_auth(config["auth"])(self, self.config["roles"]["admin"])
-        self.auth_type.set_params()
+
+        self.default_headers = config["headers"].copy()
+        self.base_url = f'{config["host"]}{config["root_path"]}'
+        self.headers = self.config["headers"]
+        self.role = self.get_role()
+        self.auth_strategy = self.auth_factory.get_auth(config["authorization_type"])()
+        self.auth_strategy.load_config(self, self.role)
 
     def call(self, method, end_point, **kwargs):
         url = f'{self.base_url}{end_point}'
@@ -39,9 +38,18 @@ class Request:
     def delete(self, end_point, **kwargs):
         return self.call('delete', end_point, **kwargs)
 
+    def get_role(self, role=None):
+        default_role = self.config["roles"][self.config["default_role"]]
+        return default_role if role is None else self.config["roles"][role]
+
     def update_credentials(self, credentials):
-        # self.auth = OAuth1(self.config[credentials]['consumer_key'], self.config[credentials]['consumer_secret'])
-        self.headers['X-TrackerToken'] = f'{self.config["roles"][credentials]}';
+        self.role = self.get_role(credentials)
+        self.auth_strategy.load_config(self, self.role)
 
     def reset_credentials(self):
-        self.headers['X-TrackerToken'] = None;
+        self.role = self.get_role()
+        self.auth_strategy.load_config(self, self.role)
+
+    def set_authorization_strategy(self, new_auth_type):
+        self.auth_strategy = self.auth_factory.get_auth(new_auth_type)
+        self.auth_strategy.load_config(self, self.role)

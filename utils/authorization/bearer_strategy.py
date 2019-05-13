@@ -1,14 +1,12 @@
-from authorization.authorization_base import AuthBase
+from authorization.authorization_strategy import AuthorizationStrategy
 
 
-class BearerAuth(AuthBase):
-    def __init__(self, request, role_info):
-        AuthBase.__init__(self, request, role_info)
+class BearerStrategy(AuthorizationStrategy):
+    def set_authentication(self, request, role):
+        request.auth = None
+        return request
 
-    def set_params(self):
-        self.request.auth = None
-        try:
-            self.request.headers[self.role_info["token_header"]] = self.role_info["token"]
-            return self.request
-        except KeyError:
-            return None
+    def set_headers(self, request, role):
+        for header in role["headers"]:
+            request.headers[header] = role["headers"][header]
+        return request
