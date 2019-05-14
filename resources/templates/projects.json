@@ -1,8 +1,8 @@
 {
   "name": "*random string(10)*",
   "iteration_length": *random integer(1,4)*,
-  "project_type": "*random privacy*",
-  "public": *random boolean*,
+  "project_type": "public",
+  "public": true,
   "week_start_day": "*random_week_day*",
   "point_scale": "0,1,2,3,5,8",
   "point_scale_is_custom": *random boolean*,

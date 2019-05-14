@@ -11,6 +11,7 @@ use_step_matcher("re")
 def step_impl(context, endpoint):
     if '<id>' in endpoint and hasattr(context, 'id'):
         endpoint = endpoint.replace('<id>', str(context.id))
+    endpoint = replace_parameters(endpoint, context)
     context.endpoint = endpoint
 
 
@@ -85,6 +86,7 @@ def step_impl(context):
     expect(result['id']).to_be_truthy()
 
 
+
 @step("I remove all projects from dashboard")
 def step_impl(context):
     all_projects = context.request.call('GET', 'projects');
@@ -125,5 +127,10 @@ def step_impl(context, endpoint_name):
     new_context_text = json.dumps(json.loads(new_context_text))
     params = context.req_params if hasattr(context, 'req_params') else None
     request_response = context.request.call('POST', endpoint_name, data=new_context_text, params=params)
+    assert request_response.status_code == 200
     context.id = request_response.json()["id"]
-    pass
+
+
+@step('I save the id as "(?P<var_name>.*)"')
+def step_impl(context, var_name):
+    context.vars[str(var_name)] = context.response.json()["id"]

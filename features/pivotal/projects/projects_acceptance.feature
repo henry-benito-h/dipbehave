@@ -1,18 +1,41 @@
 @Acceptance
-Feature: Projects
+Feature: Projects Acceptance
   As an admin
   I want to do the main CRUD operations with projects resources
   So non 4XX code should be displayed
 
-  Background:
-    Given I remove all projects from dashboard
-
+  @AT-PRO-01
   Scenario: Create a new project with required values
+    Given I remove all projects from dashboard
+    And I have the next endpoint "projects"
+    When I have the body payload below
+    """
+    {
+      "name": "*random string(10)*"
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
+    And The response body should have an id
+    And the response body should contain previous content
+    And the response body should contain previous content and
+    """
+    {
+      "public": false,
+      "project_type": "private"
+    }
+    """
+    And the response body should be equal to GET body
+
+  @AT-PRO-02
+  Scenario: Create a new project with required values from ui
     Given I have the next endpoint "projects"
     And I have the body payload below
     """
     {
-      "name": "*random string(10)*"
+      "name": "*random string(10)*",
+      "public": true,
+      "project_type": "public"
     }
     """
     When I do an api POST request
@@ -22,14 +45,13 @@ Feature: Projects
     And the response body should contain previous content and
     """
     {
-      "public": false,
-      "atom_enabled": false,
-      "project_type": "private",
+      "public": true,
+      "project_type": "public"
     }
     """
     And the response body should be equal to GET body
 
-  @create_instance_projects
+  @AT-PRO-03 @create_instance_projects
   Scenario: Edit a project
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
@@ -44,25 +66,25 @@ Feature: Projects
     Then I should have 200 as status code
     And The response body should have an id
     And the response body should contain previous content
-    And the response body should contain previous content and
-    """
-    {
-      "atom_enabled": false,
-      "automatic_planning": true,
-      "bugs_and_chores_are_estimatable": false
-    }
-    """
     And the response body should be equal to GET body
 
-
-    Scenario: Delete a project
+  @AT-PRO-04 @create_instance_projects
+  Scenario: Delete a project
     Given I have the next endpoint "projects"
-    Given I have a record already created with this content
-    """
-    {
-      "name": "*random string(10)*"
-    }
-    """
-    Given I have the next endpoint "projects/<id>"
+    And I have the next endpoint "projects/<id>"
     When I do an api DELETE request
     Then I should have 204 as status code
+
+  @AT-PRO-05 @create_instance_full_projects @In-Progress
+  Scenario: Delete a project
+    Given I have the next endpoint "projects"
+    And I have the next endpoint "projects/<id>"
+    When I do an api DELETE request
+    Then I should have 204 as status code
+
+  @AT-PRO-06 @create_instance_projects @In-Progress
+  Scenario: Archive a project
+    Given I have the next endpoint "projects"
+    And I have the next endpoint "projects/<id>/archive"
+    When I do an api POST request
+    Then I should have 302 as status code

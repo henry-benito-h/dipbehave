@@ -6,7 +6,7 @@ start_char = "*"
 end_char = "*"
 
 
-def replace_parameters(text):
+def replace_parameters(text, context=None):
     parameters_on_text = re.findall(f"{replace_special_char(start_char)}.*?{replace_special_char(end_char)}", text)
     for param in parameters_on_text:
         function_name = get_function_name(param)
@@ -14,7 +14,7 @@ def replace_parameters(text):
         if not hasattr(custom_random, function_name):
             return None
         param_value = get_parameter_value(param)
-        new_value = getattr(custom_random, function_name)(param_value) if param_value else getattr(
+        new_value = getattr(custom_random, function_name)(param_value, context=context) if param_value else getattr(
             custom_random, function_name)()
         text = text.replace(param, str(new_value))
 
