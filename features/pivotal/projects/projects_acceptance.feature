@@ -69,20 +69,70 @@ Feature: Projects Acceptance
     And the response body should be equal to GET body
 
   @AT-PRO-04 @create_instance_projects
+  Scenario: Account is not editable
+    Given I have the next endpoint "projects/<id>"
+    And I have the body payload below
+    """
+    {
+      "name": "*random string(10)*",
+      "account_id": 586658
+    }
+    """
+    When I do an api PUT request
+    Then I should have 403 as status code
+    And response body should match with content
+    """
+    {
+      "code": "unauthorized_operation",
+      "kind": "error",
+      "error": "Authorization failure.",
+      "requirement": "You must be a project creator on the destination account."
+    }
+    """
+
+  @AT-PRO-05 @create_instance_projects
+  Scenario: Delete a project
+    Given I have the next endpoint "projects"
+    And I have the next endpoint "projects/<id>"
+    When I do an api DELETE request
+    Then I should have 204 as status code
+    When I do an api GET request
+    Then I should have 403 as status code
+    And response body should match with content
+    """
+    {
+      "code": "unauthorized_operation",
+      "kind": "error",
+      "error": "Authorization failure.",
+      "general_problem": "You aren't authorized to access the requested resource.",
+      "possible_fix": "Your project permissions are determined on the Project Membership page. If you are receiving this error you may be trying to access the wrong project, or the project API access is disabled, or someone listed as the project's Owner needs to change your membership type."
+    }
+    """
+
+  @AT-PRO-06
+  Scenario: Non-existent project
+    Given I have the next endpoint "projects"
+    And I have the next endpoint "projects/wrongid"
+    When I do an api GET request
+    Then I should have 404 as status code
+    And response body should match with content
+    """
+    {
+      "code": "unfound_resource",
+      "kind": "error",
+      "error": "The object you tried to access could not be found.  It may have been removed by another user, you may be using the ID of another object type, or you may be trying to access a sub-resource at the wrong point in a tree."
+    }
+    """
+
+  @AT-PRO-07 @create_instance_full_projects @In-Progress
   Scenario: Delete a project
     Given I have the next endpoint "projects"
     And I have the next endpoint "projects/<id>"
     When I do an api DELETE request
     Then I should have 204 as status code
 
-  @AT-PRO-05 @create_instance_full_projects @In-Progress
-  Scenario: Delete a project
-    Given I have the next endpoint "projects"
-    And I have the next endpoint "projects/<id>"
-    When I do an api DELETE request
-    Then I should have 204 as status code
 
-  @AT-PRO-06 @create_instance_projects @In-Progress
+  @AT-PRO-08 @create_instance_projects @In-Progress
   Scenario: Archive a project
     Given I have the next endpoint "projects"
     And I have the next endpoint "projects/<id>/archive"

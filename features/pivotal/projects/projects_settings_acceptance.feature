@@ -67,12 +67,32 @@ Feature: Projects Acceptance
     Then I should have 400 as status code
 
   @ATS-PRO-03 @create_instance_projects
-  Scenario: Bugs and Chores May Be Given Points
+  Scenario: Feature are estimated when Bugs and Chores May Be Given Points are disabled
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
     """
     {
       "bugs_and_chores_are_estimatable": true
+    }
+    """
+    When I do an api PUT request
+    Then I should have 200 as status code
+    When I have the next endpoint "projects/<id>/stories"
+    And I have the body payload below
+    """
+    {
+      "name":"*random string*",
+      "story_type":"feature",
+      "estimate": 3
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
+    When I have the next endpoint "projects/<id>"
+    And I have the body payload below
+    """
+    {
+      "bugs_and_chores_are_estimatable": false
     }
     """
     When I do an api PUT request
