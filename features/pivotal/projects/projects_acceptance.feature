@@ -88,3 +88,95 @@ Feature: Projects Acceptance
     And I have the next endpoint "projects/<id>/archive"
     When I do an api POST request
     Then I should have 302 as status code
+
+  @AT-PRO-07 @create_instance_projects
+  Scenario: Get all projects
+    Given I remove all projects from dashboard
+    And I have the next endpoint "projects"
+    When I have the body payload below
+    """
+    {
+      "name": "First",
+      "iteration_length": 1,
+      "week_start_day": "Monday",
+      "point_scale": "0,1,2,3,5,8",
+      "point_scale_is_custom": false,
+      "bugs_and_chores_are_estimatable": false,
+      "automatic_planning": true,
+      "enable_tasks": true,
+      "time_zone": {
+          "olson_name": "America/New_York",
+          "offset": "-04:00"
+      },
+      "number_of_done_iterations_to_show": 4,
+      "has_google_domain": false,
+      "enable_incoming_emails": true,
+      "initial_velocity": 10,
+      "public": true,
+      "atom_enabled": false,
+      "project_type": "public",
+      "current_iteration_number": 78,
+      "enable_following": true
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
+    When I have the body payload below
+    """
+    {
+      "name": "Second",
+      "iteration_length": 1,
+      "week_start_day": "Tuesday",
+      "point_scale": "0,1,2,3,5,8",
+      "point_scale_is_custom": false,
+      "bugs_and_chores_are_estimatable": false,
+      "automatic_planning": true,
+      "enable_tasks": false,
+      "time_zone": {
+          "olson_name": "America/New_York",
+          "offset": "-04:00"
+      },
+      "number_of_done_iterations_to_show": 4,
+      "has_google_domain": false,
+      "enable_incoming_emails": true,
+      "initial_velocity": 15,
+      "public": true,
+      "atom_enabled": false,
+      "project_type": "public",
+      "current_iteration_number": 78,
+      "enable_following": true
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
+    When I do an api GET request
+    Then I should have 200 as status code
+    And I should get a list records tha contains
+    """
+    [
+      {
+        "name": "First",
+        "iteration_length": 1,
+        "week_start_day": "Monday",
+        "point_scale": "0,1,2,3,5,8",
+        "point_scale_is_custom": false,
+        "bugs_and_chores_are_estimatable": false,
+        "automatic_planning": true,
+        "enable_tasks": true,
+        "time_zone": {
+            "kind": "time_zone",
+            "olson_name": "America/New_York",
+            "offset": "-04:00"
+        },
+        "number_of_done_iterations_to_show": 4,
+        "has_google_domain": false,
+        "enable_incoming_emails": true,
+        "initial_velocity": 10,
+        "public": true,
+        "atom_enabled": false,
+        "project_type": "public",
+        "current_iteration_number": 78,
+        "enable_following": true
+      }
+    ]
+    """

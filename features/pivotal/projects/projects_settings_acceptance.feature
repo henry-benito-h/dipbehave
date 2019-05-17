@@ -89,7 +89,7 @@ Feature: Projects Acceptance
     And I do an api POST request
     Then I should have 200 as status code
 
-  @ATS-PRO-03 @create_instance_projects
+  @ATS-PRO-04 @create_instance_projects
   Scenario: Bugs and Chores May Be Given Points
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
@@ -113,7 +113,7 @@ Feature: Projects Acceptance
     Then I should have 200 as status code
 
 
-  @ATS-PRO-04 @create_instance_projects
+  @ATS-PRO-05 @create_instance_projects
   Scenario: Bugs and Chores May Be Given Points
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
@@ -136,7 +136,7 @@ Feature: Projects Acceptance
     And I do an api POST request
     Then I should have 400 as status code
 
-  @ATS-PRO-## @create_instance_projects
+  @ATS-PRO-06 @create_instance_projects
   Scenario: Modify random start day
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
@@ -148,3 +148,4 @@ Feature: Projects Acceptance
     When I do an api PUT request
     Then I should have 200 as status code
     And the response body should contain previous content
+
