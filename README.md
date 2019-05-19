@@ -11,7 +11,7 @@ El codigo actual esta implementado en un repositorio en github. Para poder clona
 
 ```git clone https://github.com/henry-benito-h/dipbehave.git```
 
-EL codigo estable se encuentra en el branch 'develop'. Ejecutar el siguiente commando para moverse al branch mencionado.
+El codigo estable se encuentra en el branch 'develop'. Ejecutar el siguiente commando para moverse al branch mencionado.
 
 ```git branch develop```
 
@@ -42,7 +42,7 @@ siguiente comando para instalarlo:
   - requests>=2.21.0
   - requests-oauthlib>=1.2.0
 
-  para la instalacion de requerimientos se ejecuta el siguiente comando:
+Para la instalacion de requerimientos se ejecuta el siguiente comando:
     ```
     pip install -r requirements.txt
     ```
