@@ -24,7 +24,7 @@ _Las siguientes requerimientos son necesarios para la ejecucion del proyecto._
 Es posible obtener el instalador de python en su [pagina oficial](https://www.python.org/downloads/) de acuerdo a la plataforma sobre la que se esta trabajando.
 
 - Pip
-EL gestor de paquetes de python, desde python 3 el gestor ya viene instalado por defecto, sin embargo puede ejecutar el 
+El gestor de paquetes de python, desde python 3 el gestor ya viene instalado por defecto, sin embargo puede ejecutar el 
 siguiente comando para instalarlo:
 
     ```
@@ -86,7 +86,7 @@ _Mediante linea terminal, el siguiente comando permite ejecutar los escenarios m
 hasta finalizar
 ```
 
-para la ejecuacion de un escenario que usa tags se puede anadir el parametro "--tag" de la siguiente manera:
+Para la ejecuacion de un escenario que usa tags se puede anadir el parametro "--tag" de la siguiente manera:
 ```
 angular2
 ```
