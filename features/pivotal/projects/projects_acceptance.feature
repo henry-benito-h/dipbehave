@@ -75,14 +75,14 @@ Feature: Projects Acceptance
     When I do an api DELETE request
     Then I should have 204 as status code
 
-  @AT-PRO-05 @create_instance_full_projects @In-Progress
+  @AT-PRO-05 @create_instance_full_projects @wip
   Scenario: Delete a project
     Given I have the next endpoint "projects"
     And I have the next endpoint "projects/<id>"
     When I do an api DELETE request
     Then I should have 204 as status code
 
-  @AT-PRO-06 @create_instance_projects @In-Progress
+  @AT-PRO-06 @create_instance_projects @wip
   Scenario: Archive a project
     Given I have the next endpoint "projects"
     And I have the next endpoint "projects/<id>/archive"
