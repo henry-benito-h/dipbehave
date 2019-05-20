@@ -110,7 +110,7 @@ Feature: Projects Acceptance
     """
 
   @AT-PRO-06
-  Scenario: Non-existent project
+  Scenario: Get a non-existent project
     Given I have the next endpoint "projects"
     And I have the next endpoint "projects/wrongid"
     When I do an api GET request
@@ -139,7 +139,7 @@ Feature: Projects Acceptance
     When I do an api POST request
     Then I should have 302 as status code
 
-  @AT-PRO-07 @create_instance_projects
+  @AT-PRO-09 @create_instance_projects
   Scenario: Get all projects
     Given I remove all projects from dashboard
     And I have the next endpoint "projects"
@@ -165,7 +165,6 @@ Feature: Projects Acceptance
       "public": true,
       "atom_enabled": false,
       "project_type": "public",
-      "current_iteration_number": 78,
       "enable_following": true
     }
     """
@@ -193,7 +192,6 @@ Feature: Projects Acceptance
       "public": true,
       "atom_enabled": false,
       "project_type": "public",
-      "current_iteration_number": 78,
       "enable_following": true
     }
     """
@@ -225,7 +223,29 @@ Feature: Projects Acceptance
         "public": true,
         "atom_enabled": false,
         "project_type": "public",
-        "current_iteration_number": 78,
+        "enable_following": true
+      },
+      {
+        "name": "Second",
+        "iteration_length": 1,
+        "week_start_day": "Tuesday",
+        "point_scale": "0,1,2,3,5,8",
+        "point_scale_is_custom": false,
+        "bugs_and_chores_are_estimatable": false,
+        "automatic_planning": true,
+        "enable_tasks": false,
+        "time_zone": {
+            "kind": "time_zone",
+            "olson_name": "America/New_York",
+            "offset": "-04:00"
+        },
+        "number_of_done_iterations_to_show": 4,
+        "has_google_domain": false,
+        "enable_incoming_emails": true,
+        "initial_velocity": 15,
+        "public": true,
+        "atom_enabled": false,
+        "project_type": "public",
         "enable_following": true
       }
     ]

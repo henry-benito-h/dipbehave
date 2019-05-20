@@ -145,9 +145,7 @@ def step_impl(context):
     for record_in_expected in expected:
         for i in range(len(current)):
             record_in_current = current[i]
-            # if all(item in record_in_current.items() for item in record_in_expected.items()):
-            # if all(item in record_in_expected.items() for item in record_in_current.items()):
-            if record_in_expected.items() <= record_in_current.items():
+            if all(item in record_in_current.items() for item in record_in_expected.items()):
                 break
             if i == len(current) - 1:
-                assert fail("Record was not found!")
+                assert fail(f'Record was not found!\n{expected}')

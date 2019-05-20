@@ -1,5 +1,5 @@
 @AcceptanceSettings
-Feature: Projects Acceptance
+Feature: Projects Settings Acceptance
   As an admin
   I want to do the make basic changes with projects settings
   So no 4XX and 5XX codes should be displayed
@@ -134,7 +134,7 @@ Feature: Projects Acceptance
 
 
   @ATS-PRO-05 @create_instance_projects
-  Scenario: Bugs and Chores May Be Given Points
+  Scenario: Bugs and Chores are not pointed
     Given I have the next endpoint "projects/<id>"
     And I have the body payload below
     """
@@ -169,3 +169,48 @@ Feature: Projects Acceptance
     Then I should have 200 as status code
     And the response body should contain previous content
 
+ @ATS-PRO-07 @create_instance_projects
+  Scenario: Create history with scale point
+    Given I have the next endpoint "projects/<id>"
+    And I have the body payload below
+    """
+    {
+      "point_scale": "0,1,2,4,8",
+      "point_scale_is_custom": false
+    }
+    """
+    When I do an api PUT request
+    Then I should have 200 as status code
+    When I have the next endpoint "projects/<id>/stories"
+    And I have the body payload below
+    """
+    {
+      "name":"*random string*",
+      "estimate": 3
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
+
+  @ATS-PRO-08 @create_instance_projects
+  Scenario: Create history with custom scale point
+    Given I have the next endpoint "projects/<id>"
+    And I have the body payload below
+    """
+    {
+      "point_scale": "0,1,6,7,13",
+      "point_scale_is_custom": true
+    }
+    """
+    When I do an api PUT request
+    Then I should have 200 as status code
+    When I have the next endpoint "projects/<id>/stories"
+    And I have the body payload below
+    """
+    {
+      "name":"*random string*",
+      "estimate": 7
+    }
+    """
+    And I do an api POST request
+    Then I should have 200 as status code
