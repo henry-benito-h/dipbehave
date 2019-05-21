@@ -1,5 +1,6 @@
 import json
 from compare import expect, ensure
+from assertpy import *
 from behave import *
 
 from transformation.param_transformation import replace_parameters
@@ -31,6 +32,8 @@ def step_impl(context):
 def step_impl(context, method):
     data = context.req_body if hasattr(context, 'req_body') else None
     params = context.req_params if hasattr(context, 'req_params') else None
+    if method == "GET":
+        data = None
     context.response = context.request.call(method, context.endpoint, data=data, params=params)
 
 
@@ -86,7 +89,6 @@ def step_impl(context):
     expect(result['id']).to_be_truthy()
 
 
-
 @step("I remove all projects from dashboard")
 def step_impl(context):
     all_projects = context.request.call('GET', 'projects');
@@ -134,3 +136,16 @@ def step_impl(context, endpoint_name):
 @step('I save the id as "(?P<var_name>.*)"')
 def step_impl(context, var_name):
     context.vars[str(var_name)] = context.response.json()["id"]
+
+
+@step("I should get a list records tha contains")
+def step_impl(context):
+    current = context.response.json()
+    expected = json.loads(context.text)
+    for record_in_expected in expected:
+        for i in range(len(current)):
+            record_in_current = current[i]
+            if all(item in record_in_current.items() for item in record_in_expected.items()):
+                break
+            if i == len(current) - 1:
+                assert fail(f'Record was not found!\n{expected}')
