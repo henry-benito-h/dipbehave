@@ -186,7 +186,7 @@ Feature: Projects Settings Acceptance
     """
     {
       "name":"*random string*",
-      "estimate": 3
+      "estimate": 4
     }
     """
     And I do an api POST request
