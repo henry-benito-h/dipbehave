@@ -123,22 +123,6 @@ Feature: Projects Acceptance
       "error": "The object you tried to access could not be found.  It may have been removed by another user, you may be using the ID of another object type, or you may be trying to access a sub-resource at the wrong point in a tree."
     }
     """
-
-  @AT-PRO-07 @create_instance_full_projects @In-Progress
-  Scenario: Delete a project
-    Given I have the next endpoint "projects"
-    And I have the next endpoint "projects/<id>"
-    When I do an api DELETE request
-    Then I should have 204 as status code
-
-
-  @AT-PRO-08 @create_instance_projects @In-Progress
-  Scenario: Archive a project
-    Given I have the next endpoint "projects"
-    And I have the next endpoint "projects/<id>/archive"
-    When I do an api POST request
-    Then I should have 302 as status code
-
   @AT-PRO-09 @create_instance_projects
   Scenario: Get all projects
     Given I remove all projects from dashboard
