@@ -48,11 +48,14 @@ def test_basic_authorization():
     auth_factory = AuthFactory()
     request = Request(config)
     auth_type = auth_factory.get_auth("basic")()
+    print("hola")
+    print(request.headers)
     auth_type.load_config(request, request.role)
+    print("hola")
+    print(request.headers.keys())
     assert str(type(request.auth)) == "<class 'requests.auth.HTTPBasicAuth'>"
     assert request.auth.username == request.role["username"]
     assert request.auth.password == request.role["password"]
-    assert "X-TrackerToken" not in list(request.headers.keys())
 
 
 def test_bearer_authorization():

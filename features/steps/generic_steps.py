@@ -124,8 +124,8 @@ def step_impl(context):
 
 @step('I create a record for "(?P<endpoint_name>.*)" from template')
 def step_impl(context, endpoint_name):
-    template = open(f"resources/templates/{endpoint_name}.json")
-    new_context_text = replace_parameters(template.read())
+    template = context.templates.get_template(endpoint_name)
+    new_context_text = replace_parameters(template)
     new_context_text = json.dumps(json.loads(new_context_text))
     params = context.req_params if hasattr(context, 'req_params') else None
     request_response = context.request.call('POST', endpoint_name, data=new_context_text, params=params)

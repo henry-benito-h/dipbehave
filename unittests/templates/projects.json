@@ -1,0 +1,22 @@
+{
+  "name": "*random string(10)*",
+  "iteration_length": *random integer(1,4)*,
+  "project_type": "public",
+  "public": true,
+  "week_start_day": "*random_week_day*",
+  "point_scale": "0,1,2,3,5,8",
+  "point_scale_is_custom": *random boolean*,
+  "bugs_and_chores_are_estimatable": *random boolean*,
+  "automatic_planning": *random boolean*,
+  "enable_tasks": *random boolean*,
+  "number_of_done_iterations_to_show": 4,
+  "has_google_domain": *random boolean*,
+  "enable_incoming_emails": *random boolean*,
+  "initial_velocity": 10,
+  "atom_enabled": *random boolean*,
+  "enable_following": *random boolean*,
+  "time_zone": {
+     "olson_name": "America/New_York",
+     "offset": "-04:00"
+  }
+}
