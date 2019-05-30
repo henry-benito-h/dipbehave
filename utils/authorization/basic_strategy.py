@@ -15,13 +15,9 @@ class BasicStrategy(AuthorizationStrategy):
     def set_authentication(self, request, role):
         """
         This method uses Basic authentication to work with request.
-
-        Parameters
-        ----------
-        request : Request
-            The object to work with requests
-        role : Dictionary
-            This have the information of the role, username and password.
+        :param request: The object to work with requests
+        :param role: This have the information of the role, username and password.
+        :return: Updated request instance
         """
         request.auth = HTTPBasicAuth(role["username"], role["password"])
         return request
@@ -29,13 +25,9 @@ class BasicStrategy(AuthorizationStrategy):
     def set_headers(self, request, role):
         """
         This clean the request's headers and set them to default values
-
-        Parameters
-        ----------
-        request : Request
-            The object to work with requests
-        role : Dictionary
-            This have the information of the role.
+        :param request: The object to work with requests
+        :param role: This have the information of the role.
+        :return: Updated request instance
         """
         request.headers = request.default_headers
         return request

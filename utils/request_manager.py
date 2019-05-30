@@ -35,36 +35,44 @@ class Request:
         self.auth_strategy.load_config(self, self.role)
 
     def call(self, method, end_point, **kwargs):
+        """
+        This method execute a request against the url and endpoint
+        :param method: The method that will be executed, i.e. POST,GET,etc.
+        :param end_point: THe endpoint where the method will be used.
+        :param kwargs: Other parameters to execute the method, i.e. body payload, headers,etc.
+        :return: A request response
+        """
         url = f'{self.base_url}{end_point}'
         return requests.request(method, url, auth=self.auth, headers=self.headers, **kwargs)
 
-    # def get(self, end_point, **kwargs):
-    #     return self.call('get', end_point, **kwargs)
-    #
-    # def post(self, end_point, data=None, **kwargs):
-    #     return self.call('post', end_point, data=data, **kwargs)
-    #
-    # def put(self, end_point, data=None, **kwargs):
-    #     return self.call('put', end_point, data=data, **kwargs)
-    #
-    # def patch(self, end_point, data=None, **kwargs):
-    #     return self.call('patch', end_point, data=data, **kwargs)
-    #
-    # def delete(self, end_point, **kwargs):
-    #     return self.call('delete', end_point, **kwargs)
-
     def get_role(self, role=None):
+        """
+        Get the role from config file
+        :param role: String with the role name
+        :return: If the role value is None then the role recovered is the default role.
+        """
         default_role = self.config["roles"][self.config["default_role"]]
         return default_role if role is None else self.config["roles"][role]
 
     def update_credentials(self, credentials):
+        """
+        This method modify credentials used on request.
+        :param credentials: String related to a name in the config file.
+        """
         self.role = self.get_role(credentials)
         self.auth_strategy.load_config(self, self.role)
 
     def reset_credentials(self):
+        """
+        This method reset credentials to its value by default in the config file.
+        """
         self.role = self.get_role()
         self.auth_strategy.load_config(self, self.role)
 
     def set_authorization_strategy(self, new_auth_type):
+        """
+        Update the strategy for authorization for the current role.
+        :param new_auth_type: The new authorization value.
+        """
         self.auth_strategy = self.auth_factory.get_auth(new_auth_type)
         self.auth_strategy.load_config(self, self.role)

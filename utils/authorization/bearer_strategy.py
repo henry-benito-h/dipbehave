@@ -14,13 +14,9 @@ class BearerStrategy(AuthorizationStrategy):
     def set_authentication(self, request, role):
         """
         This method sets to None the authentication for request.
-
-        Parameters
-        ----------
-        request : Request
-            The object to work with requests
-        role : Dictionary
-            This have the information of the role, username and password.
+        :param request: The object to work with requests
+        :param role: This have the information of the role, username and password.
+        :return: Updated request instance
         """
         request.auth = None
         return request
@@ -28,13 +24,9 @@ class BearerStrategy(AuthorizationStrategy):
     def set_headers(self, request, role):
         """
         This clean the request's headers and set them the role's values.
-
-        Parameters
-        ----------
-        request : Request
-            The object to work with requests
-        role : Dictionary
-            This have the information of the role.
+        :param request: The object to work with requests
+        :param role: This have the information of the role.
+        :return: Update request instance
         """
         request.headers = request.default_headers
         for header in role["headers"]:
